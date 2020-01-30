@@ -1,4 +1,5 @@
 library(plumber)
+library(tidyverse)
 library(ggplot2)
 library(plotly)
 
@@ -9,7 +10,9 @@ library(plotly)
 #* @get /plotly
 function() {
   p <- ggplot(diamonds) + 
-    geom_bar(aes(x = cut, fill = clarity), position = 'dodge')
+    geom_bar(aes(x = cut, fill = clarity), position = 'dodge') +
+    theme_classic()
   
-  ggplotly(p)
+  ggplotly(p) %>% 
+    config(displayModeBar = F)
 }
