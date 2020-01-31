@@ -4,7 +4,7 @@
 * I want to do this without recreating my work in `JS` plotting libraries.
 * `Plumber` can be used to create REST API endpoints out of `R` objects/functions to be called from my website. 
 
-## Plumber structure
+## API Configuration
 * This API will be hosted as a single backend service for all of my projects
 * It is necessary to programmatically set up `Plumber` as a [mounted router](https://www.rplumber.io/docs/programmatic-usage.html#mount-static) due to all the different endpoints to manage
 
