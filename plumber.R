@@ -8,6 +8,6 @@ root$mount("/diamond", diamond_api)
 mpg_api <- plumber$new("mpg/plot.R")
 root$mount("/mpg", mpg_api)
 
-root$run()
+root$run(host='0.0.0.0', port=8080)
 
 
