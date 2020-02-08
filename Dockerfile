@@ -23,10 +23,14 @@ RUN R -e "remotes::install_github('rstudio/plumber')"
 # Copy all, use .dockerignore in root to exclude
 COPY . /
 
+# Make start.sh an executable
+RUN chmod +x start.sh
+
 # Expose port, will not be respected by Heroku
 EXPOSE 8080
 
 # run root plumber.R on container startup
-ENTRYPOINT ["Rscript", "plumber.R"]
-
+#ENTRYPOINT ["Rscript", "plumber.R"]
+ENTRYPOINT ["./start.sh"]
+CMD ["plumber.R"]
 #CMD ["R"]

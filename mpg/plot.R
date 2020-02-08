@@ -5,6 +5,13 @@ library(plotly)
 
 #* @apiTitle MPG plotly export
 
+#* Enable CORS
+#* @filter cors
+cors <- function(res) {
+    res$setHeader("Access-Control-Allow-Origin", "*")
+    plumber::forward()
+}
+
 #* Return plotly object
 #* @serializer htmlwidget
 #* @get /plot
