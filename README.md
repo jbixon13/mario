@@ -1,4 +1,5 @@
 # maRio
+[![Build Status](https://travis-ci.org/jbixon13/mario.svg?branch=master)](https://travis-ci.org/jbixon13/mario)
 
 * I want to use `R` to its advantages (data manipulation, modeling, viz, etc.) and then host my work on a website. 
 * I want to do this without recreating my work in `JS` plotting libraries.
