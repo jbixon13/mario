@@ -21,5 +21,5 @@ mario
 
 ## Hosting
 * `Plumber` has integrations with DigitalOcean but building a `Docker` image allows for more flexibility in hosting options
-* Heroku is free (with caveats) so I will Dockerize the API, host it as a Heroku app, & test GET request performance
-* If this works I will then build a `Travis CI` pipeline as seen in [shinyhero](https://github.com/jbixon13/shinyhero)
+* Heroku is free (with caveats) so I have Dockerized the API, hosted it as a Heroku app, & integrated it into my [Express app](https://github.com/jbixon13/nodeblog)
+* `Travis CI` is then set up to automatically re-build the hosted API whenever I push changes to the master branch
