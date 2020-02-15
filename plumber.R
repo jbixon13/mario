@@ -10,3 +10,6 @@ root$mount("/diamond", diamond_api)
 
 mpg_api <- plumber$new("mpg/plot.R")
 root$mount("/mpg", mpg_api)
+
+mta_article_api <- plumber$new("MTA_article/plot.R")
+root$mount("/MTA_article", mta_article_api)
