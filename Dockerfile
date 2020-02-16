@@ -11,7 +11,11 @@ RUN apt-get update -qq && apt-get install -y \
   r-cran-remotes \  
   r-cran-tidyverse \
   r-cran-ggplot2 \
-  r-cran-plotly
+  r-cran-plotly \
+  r-cran-RSocrata \
+  r-cran-janitor \
+  r-cran-scales \
+  r-cran-lubridate
 
 # Install packages from source
 RUN R -e "remotes::install_github('rstudio/plumber')"
