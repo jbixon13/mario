@@ -32,10 +32,10 @@ function() {
   # ridership
   transit_ridership <- transit %>% 
     filter(indicator_name == 'Total Ridership - Subways') %>% 
-    mutate(monthly_actual = round((monthly_actual))
+    mutate(monthly_actual = round((monthly_actual)))
 
   #plot ridership
-  plt_ridership <-  transit_ridership %>% 
+  plt_ridership <- transit_ridership %>% 
     ggplot(aes(x = period, y = monthly_actual)) +
     geom_point(color = 'steelblue4', alpha = .7) + 
     geom_smooth(method = 'lm') + 
