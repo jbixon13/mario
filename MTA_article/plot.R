@@ -131,3 +131,13 @@ function() {
     ) %>% 
     config(displayModeBar = FALSE, scrollZoom = FALSE)
 }
+
+#* Return JSON object - plot 1
+#* @json 
+#* @get /plot1test
+function() {
+  # ridership
+  transit_ridership <- transit %>% 
+    filter(indicator_name == 'Total Ridership - Subways') %>% 
+    mutate(monthly_actual = round((monthly_actual)))
+}
