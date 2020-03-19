@@ -23,6 +23,7 @@ MTA_KPI <- RSocrata::read.socrata('https://data.ny.gov/resource/cy9b-i9w9.json?$
 transit <- MTA_KPI %>% 
   mutate(period = ymd(paste0(period, '-01'))) %>% 
   mutate(monthly_actual = as.numeric(monthly_actual)) %>% 
+  select(-description) %>% 
   clean_names()
 
 #* Return plotly object - plot 1
