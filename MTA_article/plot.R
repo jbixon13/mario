@@ -6,6 +6,7 @@ library(janitor)
 library(ggplot2)
 library(scales)
 library(plotly)
+library(paws)
 
 #* @apiTitle MTA article plotly export
 
@@ -25,6 +26,9 @@ transit <- MTA_KPI %>%
   mutate(monthly_actual = as.numeric(monthly_actual)) %>% 
   select(-description) %>% 
   clean_names()
+
+# initialize s3 instance
+s3 <- paws::s3()
 
 #* Return plotly object - plot 1
 #* @serializer htmlwidget
@@ -141,4 +145,11 @@ function() {
   transit_ridership <- transit %>% 
     filter(indicator_name == 'Total Ridership - Subways') %>% 
     mutate(monthly_actual = round((monthly_actual)))
+  
+  # write json object to S3 storage
+  s3$put_object(
+    Body = 'plot1test.json',
+    Bucket = 'mario-object-storage',
+    Key = 'MTA-article/plot1test.json'
+  )
 }
