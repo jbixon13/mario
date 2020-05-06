@@ -3,9 +3,6 @@ library(tidyverse)
 library(RSocrata)
 library(lubridate)
 library(janitor)
-library(ggplot2)
-library(scales)
-library(plotly)
 library(paws)
 
 #* @apiTitle MTA article plotly export
@@ -30,31 +27,21 @@ transit <- MTA_KPI %>%
 # initialize s3 instance
 s3 <- paws::s3()
 
-#* Return plotly object - plot 1
-#* @serializer htmlwidget
+#* Return JSON object - plot 1
+#* @json 
 #* @get /plot1
 function() {
   # ridership
   transit_ridership <- transit %>% 
     filter(indicator_name == 'Total Ridership - Subways') %>% 
     mutate(monthly_actual = round((monthly_actual)))
-
-  #plot ridership
-  plt_ridership <- transit_ridership %>% 
-    ggplot(aes(x = period, y = monthly_actual)) +
-    geom_point(color = 'steelblue4', alpha = .7) + 
-    geom_smooth(method = 'lm') + 
-    ylab('Total Monthly Ridership - All Lines') +
-    scale_y_continuous(labels = comma) +
-    theme_classic()
-
-  ggplotly(plt_ridership) %>% 
-    layout(title = list(text = 'There is no clear trend of monthly ridership',
-                        font = list(size = 15
-                        )
-    )
-    ) %>% 
-    config(displayModeBar = FALSE, scrollZoom = FALSE)
+  
+  # write json object to S3 storage
+  s3$put_object(
+    Body = 'plot1.json',
+    Bucket = 'mario-object-storage',
+    Key = 'MTA-article/plot1.json'
+  )
 }
 
 #* Return plotly object - plot 2
@@ -66,22 +53,12 @@ function() {
     filter(indicator_name == 'On-Time Performance (Terminal)') %>% 
     mutate(monthly_actual = monthly_actual / 100)
 
-  # plot On-Time Performance
-  plt_otp <- transit_otp %>% 
-    ggplot(aes(x = period, y = monthly_actual)) +
-    geom_point(color = 'steelblue4', alpha = .7) + 
-    geom_smooth(method = 'lm') + 
-    ylab('Monthly On-Time Performance - All Lines') +
-    scale_y_continuous(labels = percent) +
-    theme_classic()
-
-  ggplotly(plt_otp) %>% 
-    layout(title = list(text = 'Subway cars are arriving at their destination on schedule less.',
-                        font = list(size = 15
-                        )
-    )
-    ) %>% 
-    config(displayModeBar = FALSE, scrollZoom = FALSE)
+  # write json object to S3 storage
+  s3$put_object(
+    Body = 'plot2.json',
+    Bucket = 'mario-object-storage',
+    Key = 'MTA-article/plot2.json'
+  )
 }
 
 #* Return plotly object - plot 3
@@ -93,22 +70,12 @@ function() {
     filter(indicator_name == 'Subway Wait Assessment ') %>% 
     mutate(monthly_actual = monthly_actual / 100)
 
-  # plot wait assessment
-  plt_wait <- transit_wait %>% 
-    ggplot(aes(x = period, y = monthly_actual)) +
-    geom_point(color = 'steelblue4', alpha = .7) + 
-    geom_smooth(method = 'lm') + 
-    ylab('Subway Wait Assessment - All Lines') +
-    scale_y_continuous(labels = percent) +
-    theme_classic()
-
-  ggplotly(plt_wait) %>% 
-    layout(title = list(text = 'Subway cars are less routinely spaced during peak hours.', 
-                        font = list(size = 15
-                        )
-    )
-    ) %>% 
-    config(displayModeBar = FALSE, scrollZoom = FALSE) 
+  # write json object to S3 storage
+  s3$put_object(
+    Body = 'plot3.json',
+    Bucket = 'mario-object-storage',
+    Key = 'MTA-article/plot3.json'
+  )
 }
 
 #* Return plotly object - plot 4
@@ -119,37 +86,10 @@ function() {
   transit_fail <- transit %>% 
     filter(indicator_name == 'Mean Distance Between Failures - Subways') 
 
-  # plot mean distance between failures
-  plt_fail <- transit_fail %>% 
-    ggplot(aes(x = period, y = monthly_actual)) +
-    geom_point(color = 'steelblue4', alpha = .7) + 
-    geom_smooth(method = 'lm') + 
-    ylab('Mean Distance Between Failures (Miles)') +
-    scale_y_continuous(labels = comma) +
-    theme_classic()
-
-  ggplotly(plt_fail) %>% 
-    layout(title = list(text = 'Subway cars are breaking down more frequently.',
-                        font = list(size = 15
-                        )
-    )
-    ) %>% 
-    config(displayModeBar = FALSE, scrollZoom = FALSE)
-}
-
-#* Return JSON object - plot 1
-#* @json 
-#* @get /plot1test
-function() {
-  # ridership
-  transit_ridership <- transit %>% 
-    filter(indicator_name == 'Total Ridership - Subways') %>% 
-    mutate(monthly_actual = round((monthly_actual)))
-  
   # write json object to S3 storage
   s3$put_object(
-    Body = 'plot1test.json',
+    Body = 'plot4.json',
     Bucket = 'mario-object-storage',
-    Key = 'MTA-article/plot1test.json'
+    Key = 'MTA-article/plot4.json'
   )
 }
