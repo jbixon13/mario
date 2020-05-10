@@ -15,7 +15,8 @@ RUN apt-get update -qq && apt-get install -y \
   r-cran-janitor \
   r-cran-scales \
   r-cran-lubridate \
-  r-cran-paws
+  r-cran-paws \
+  r-cran-jsonlite
 
 # Install packages from source
 RUN R -e "remotes::install_github('rstudio/plumber')"
