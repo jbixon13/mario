@@ -5,6 +5,9 @@ library(lubridate)
 library(janitor)
 library(paws)
 library(jsonlite)
+library(ggplot2)
+library(scales)
+library(plotly)
 
 #* @apiTitle MTA article plot export
 
@@ -98,3 +101,43 @@ function() {
     Key = 'MTA-article/plot4.json'
   )
 }
+
+#* Return plotly object - plot 1
+#* @serializer htmlwidget
+#* @get /plot1viz
+function() {
+  # ridership
+  transit_ridership <- transit %>% 
+    filter(indicator_name == 'Total Ridership - Subways') %>% 
+    mutate(monthly_actual = round((monthly_actual)))
+  
+  #plot ridership
+  plt_ridership <- transit_ridership %>% 
+    ggplot(aes(x = period, y = monthly_actual)) +
+    geom_point(color = 'steelblue4', alpha = .7) + 
+    geom_smooth(method = 'lm') + 
+    ylab('Total Monthly Ridership - All Lines') +
+    scale_y_continuous(labels = comma) +
+    theme_classic()
+  
+  plt_ridership_viz <- ggplotly(plt_ridership) %>% 
+    layout(title = list(text = 'There is no clear trend of monthly ridership',
+                        font = list(size = 15)
+                        )
+           ) %>% 
+    config(displayModeBar = FALSE, scrollZoom = FALSE) %>% 
+    htmlwidgets::saveWidget(file = 'plotly_test.html', selfcontained = TRUE)
+  
+  file_name <- 'plotly_test.html'
+  ridership_read <- file(file_name, 'rb')
+  ridership_object <- readBin(read_file, 'raw', n = file.size(file_name))
+  
+  s3$put_object(
+    Body = ridership_object,
+    Bucket = 'mario-object-storage',
+    Key = 'MTA-article/plotly_test.html',
+    ContentType = 'text/html'
+    )
+  
+}
+
