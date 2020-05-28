@@ -131,6 +131,7 @@ function() {
   file_name <- 'plotly_test.html'
   ridership_read <- file(file_name, 'rb')
   ridership_object <- readBin(read_file, 'raw', n = file.size(file_name))
+  file.remove('plotly_test.html')
   
   s3$put_object(
     Body = ridership_object,
