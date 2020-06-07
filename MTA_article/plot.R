@@ -104,7 +104,7 @@ function() {
 
 #* Return plotly object - plot 1
 #* @serializer htmlwidget
-#* @get /plot1viz
+#* @get /plotly1
 function() {
   # ridership
   transit_ridership <- transit %>% 
@@ -126,19 +126,20 @@ function() {
                         )
            ) %>% 
     config(displayModeBar = FALSE, scrollZoom = FALSE) %>% 
-    htmlwidgets::saveWidget(file = 'plotly_test.html', selfcontained = TRUE)
+    htmlwidgets::saveWidget(file = 'plotly_ridership.html', selfcontained = FALSE, libdir = 'plotly_files')
   
-  file_name <- 'plotly_test.html'
+  file_name <- 'plotly_ridership.html'
   ridership_read <- file(file_name, 'rb')
   ridership_object <- readBin(read_file, 'raw', n = file.size(file_name))
-  file.remove('plotly_test.html')
+  file.remove(file_name)
   
   s3$put_object(
     Body = ridership_object,
     Bucket = 'mario-object-storage',
-    Key = 'MTA-article/plotly_test.html',
+    Key = 'MTA-article/plotly_ridership.html',
     ContentType = 'text/html'
     )
   
 }
+
 
